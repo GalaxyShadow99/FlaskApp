@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'includes/head.html' %}
+    <link rel="stylesheet" href="/static/perso/profile.css">
+<body>
+    {% include 'includes/header.html' %}
+
+    <main>
+        <!-- Vérification si l'utilisateur est connecté -->
+        {% if data.isLogged %}
+            <div class="container vh-90 d-flex justify-content-center align-items-center">
+                <div class="w-75 h-75 bg-light p-4 border rounded">
+                <div class="card p-4 w-100">
+                    <div class="image d-flex flex-column justify-content-center align-items-center">
+                        <button class="btn btn-secondary">
+                        <div class="container mt-2 mb-4 p-3 d-flex justify-content-center">
+                            <img id="img1" src="{{ data.data.profile_picture if data.data.profile_picture else '/static/perso/images/default-avatar.png' }}" height="100" width="100" />
+                             <style>
+                                #img1{
+                                    border-radius: 5%;
+                                    position: absolute;
+                                    top:7%;
+                                }
+                            </style> 
+                        </button>
+                        <span class="name mt-3">{{ data.data.first_name }} {{ data.data.last_name }}</span> <!-- Nom et prénom -->
+                        <span class="idd">@{{ data.data.username }}</span> <!-- Nom d'utilisateur -->
+                        <div class="d-flex flex-row justify-content-center align-items-center mt-3">
+                            <span class="number">
+                                {% if data.data.is_active %}
+                                    Compte actif
+                                {% else %}
+                                    Compte inactif
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="d-flex mt-2">
+                            <button class="btn1 btn-dark">Modifier le profil</button>
+                        </div>
+                        <div class="text mt-3">
+                            <hr><br>
+                            <h5>{{ data.data.bio }}</h5> <!-- Biographie -->
+                            <br>
+                            <hr>
+                        </div>
+                        <div class="px-2 mt-4 ">
+                            
+                            {% if data.data.role == 'dev' %}
+                                <img id="bagde" src="/static/perso/images/code.png" alt="dev bagde" width="100" height="100" > 
+                            {% else %}
+                            <img id="bagde" src="/static/perso/images/user.png" alt="dev bagde" width="100" height="100" > 
+                            {% endif %}
+
+                             <!-- role -->
+                        </div>
+                        <div class="px-2 rounded mt-4 date">
+                            <span class="join">Inscrit depuis {{ data.data.created_at.strftime('%b, %Y') }}</span> <!-- Date d'inscription -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        {% else %}
+            <!-- Si l'utilisateur n'est pas connecté -->
+            <div class="container mt-4 mb-4 p-3 d-flex justify-content-center">
+                <div class="alert alert-danger" role="alert">
+                    Vous devez être connecté pour accéder à cette page.
+                </div>
+            </div>
+        {% endif %}
+    </main>    
+
+    <!-- Import JS de Bootstrap -->
+    <script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

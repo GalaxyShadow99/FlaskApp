@@ -1,0 +1,67 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">
+            <img src="/static/uploads/profil_pics/steamulocked.png" alt="SteamUnlocked Logo" width="190" height="75" class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">
+                        <i class="bi bi-house-fill me-1"></i>Accueil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/register">
+                        <i class="bi bi-person-plus-fill me-1"></i>Register
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/profile">
+                        <i class="bi bi-person-circle me-1"></i>Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/games">
+                        <i class="bi bi-controller me-1"></i>Games
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/upload">
+                        <i class="bi bi-cloud-upload-fill me-1"></i>Upload
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<style>
+    .navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+    color: #f8f9fa !important;
+}
+
+.nav-link {
+    font-size: 1.1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+    transform: scale(1.1);
+}
+
+.nav-link.active {
+    color: #ffc107 !important;
+    font-weight: bold;
+}
+
+</style>

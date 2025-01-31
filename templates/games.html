@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'includes/head.html' %}
+<body>
+    {% include 'includes/header.html' %}
+
+    <main>
+        <!-- Messages flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="mt-4">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% if games %}
+        <style>
+            /* Conteneur pour chaque jeu */
+            .game-card {
+                background-color: #1b1b1b;
+                color: #e1e1e1;
+                border-color: #333;
+                margin-bottom: 20px;
+                display: flex; /* Utilisation de Flexbox */
+                flex-direction: row; /* Alignement horizontal des éléments */
+                justify-content: space-between; /* Espace entre l'image et les informations */
+                width: 100%;
+                padding: 20px;
+            }
+        
+            .game-card:hover {
+                background-color: #2a2a2a;
+                border-color: #555;
+                transform: scale(1.02);
+                transition: transform 0.3s ease, background-color 0.3s ease;
+            }
+        
+            .game-title {
+                color: #fff;
+            }
+        
+            .game-description {
+                font-size: 0.9rem;
+                line-height: 1.4;
+                color: #fff !important;
+            }
+        
+            .game-tags .badge {
+                margin-right: 5px;
+            }
+        
+            /* Conteneur pour l'image */
+            .game-image-container {
+                width: 240px; /* Largeur du cadre de l'image */
+                height: 150px; /* Hauteur du cadre de l'image */
+                padding: 10px;
+                border: 2px solid #333; /* Bordure pour délimiter la div */
+                display: flex;
+                justify-content: center; /* Centrer horizontalement */
+                align-items: center; /* Centrer verticalement */
+                overflow: hidden; /* Cache toute image qui dépasse les limites du cadre */
+            }
+        
+            .game-image-container img {
+                width: auto;
+                height: 100%; /* L'image s'adapte à la hauteur du cadre tout en gardant son aspect */
+            }
+        
+            /* Conteneur pour les informations du jeu */
+            .game-info {
+                flex-grow: 1; /* Prend tout l'espace restant à gauche */
+                padding-right: 20px; /* Ajoute un peu d'espace entre les infos et l'image */
+            }
+        
+            /* Container parent avec Flexbox */
+            .game-container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        
+            /* Style pour le filtre */
+            #filtre {
+                width: 25%;
+                background-color: #f4f4f4;
+                padding: 20px;
+                border-radius: 8px;
+            }
+        
+            /* Style pour la liste des jeux */
+            #gameList {
+                width: 75%;
+            }
+        
+            /* Assurer que les jeux soient affichés sur une ligne */
+            .game-row {
+                display: flex;
+                flex-direction: column; /* Pour que les jeux soient empilés sur une colonne */
+                gap: 20px; /* Espacement entre les jeux */
+            }
+        </style>
+        
+        <div class="container-fluid justify-content-center mt-5 game-container">
+            <!-- Liste des jeux -->
+            <div id="gameList">
+                <h1 class="text-center mb-4">Liste des Jeux</h1>
+                <div class="game-row">
+                    {% for game in games %}
+                        <div class="game-card border rounded">
+                            <!-- Infos du jeu -->
+                            <div class="game-info">
+                                <!-- Titre du jeu -->
+                                <h3 class="game-title mb-2">{{ game.title }}</h3>
+        
+                                <!-- Description courte -->
+                                <p class="game-description text-muted">{{ game.description }}</p>
+        
+                                <!-- Tags -->
+                                <div class="game-tags mb-2">
+                                    {% for tag in game.tags %}
+                                        <span class="badge bg-primary">{{ tag }}</span>
+                                    {% endfor %}
+                                </div>
+        
+                                <!-- Bouton d'action -->
+                                <div class="game-tags mb-2 p-3">
+                                    <a href="/game/{{ game.id }}" class="btn btn-primary">Voir le jeu</a>
+                                </div>
+                            </div>
+                            <!-- Image du jeu -->
+                            <div class="game-image-container">
+                                <img src="{{ game.image_url }}" alt="Image du jeu" class="rounded">
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        
+        </div>
+                
+        {% endif %}
+        
+    </main>    
+    <!-- Import JS de Bootstrap -->
+    <script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

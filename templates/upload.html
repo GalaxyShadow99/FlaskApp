@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'includes/head.html' %}
+<body>
+    {% include 'includes/header.html' %}
+
+    <div class="container mt-5">
+        <h1 class="text-center">Téléversez votre jeu</h1>
+
+        <!-- Messages flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="mt-4">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        <!-- Formulaire d'upload -->
+        <form action="/upload" method="POST" enctype="multipart/form-data" class="mt-4">
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom du jeu :</label>
+                <input type="text" class="form-control" id="nom" name="nom" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="descript" class="form-label">Description du jeu :</label>
+                <textarea class="form-control" id="descript" name="descript" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags (séparés par des virgules) :</label>
+                <input type="text" class="form-control" id="tags" name="tags" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Prix (€) :</label>
+                <input type="number" step="0.01" class="form-control" id="price" name="price" disabled required>
+            </div>
+
+            <div class="mb-3">
+                <label for="file" class="form-label">Uploadez ici votre fichier .zip (le format .zip est obligatoire) :</label>
+                <input type="file"  class="form-control" id="file" accept=".zip" name="file" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="image_url" class="form-label">URL de l'image (copiez le lien de Google Image par example) :</label>
+                <input type="url" class="form-control" id="image_url" name="image_url" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Téléverser</button>
+        </form>
+    </div>
+
+    <!-- Import JS de Bootstrap -->
+    <script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

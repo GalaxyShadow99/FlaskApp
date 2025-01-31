@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% include 'includes/head.html' %}
+<body>
+    {% include 'includes/header.html' %}
+
+    <main>
+        <!-- Messages flash -->
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        <div class="mt-4">
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }} text-center" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+        <div class="container vh-90 d-flex justify-content-center align-items-center">
+            <div class="w-75 bg-light p-4 border rounded">
+                <div class="container mt-5">
+                    <h1 class="text-center">Créer un compte</h1>
+                    <form action="/register" method="POST" enctype="multipart/form-data" class="mt-4">
+                        <!-- Username -->
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nom d'utilisateur</label>
+                            <input type="text" class="form-control" id="username" name="username" maxlength="50" required>
+                        </div>
+                
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Adresse e-mail</label>
+                            <input type="email" class="form-control" id="email" name="email" maxlength="100" required>
+                        </div>
+                
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Mot de passe</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>                
+                        <!-- Nom -->
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nom</label>
+                            <input type="text" class="form-control" id="nom" name="nom" maxlength="50">
+                        </div>
+                
+                        <!-- Prénom -->
+                        <div class="mb-3">
+                            <label for="prenom" class="form-label">Prénom</label>
+                            <input type="text" class="form-control" id="prenom" name="prenom" maxlength="50">
+                        </div>
+                
+                        <!-- Role -->
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Rôle</label>
+                            <select class="form-select" id="role" name="role">
+                                <option value="user" selected>Utilisateur</option>
+                                <option value="dev">Développeur</option>
+                            </select>
+                        </div> 
+                
+                        <!-- Profile Picture -->
+                        <div class="mb-3">
+                            <label for="profile_picture" class="form-label">Photo de profil</label>
+                            <input type="file" class="form-control" id="profile_picture" name="profile_picture" accept="image/*">
+                        </div>
+                
+                        <!-- Bio -->
+                        <div class="mb-3">
+                            <label for="bio" class="form-label">Biographie</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+                        </div>
+                
+                        <!-- Is Active -->
+                        <!-- <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
+                            <label class="form-check-label" for="is_active">
+                                Activer le compte
+                            </label>
+                        </div> -->
+                
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary">Créer le compte</button>
+                    </form>
+                </div>
+                    </div>
+</div>
+
+        
+    </main>    
+
+    <!-- Import JS de Bootstrap -->
+    <script src="/static/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
