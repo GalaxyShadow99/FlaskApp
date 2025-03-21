@@ -4,7 +4,7 @@ from flask import Flask, request, render_template, redirect, flash, url_for,abor
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from backend import *  # Importation des fonctions backend
+#from backend import * 
 
 app = Flask(__name__)
 app.secret_key = "azerty"
@@ -54,12 +54,12 @@ class GameSQLTable(db.Model):  # Représentation de la table 'games' de MySQL
         """Affichage des données du jeu avec émojis pour un debug visuel."""
         separator = "\n" + "=" * 40 + "\n"
         game_info = (
-            f"🎮 Nom du jeu : {self.title}\n"
-            f"📝 Description : {self.description[:50]}{'...' if len(self.description) > 50 else ''}\n"
-            f"🏷️ Tags : {self.tags if self.tags else 'Aucun'}\n"
-            f"🖼️ Image URL : {self.image_url if self.image_url else 'Pas d\'image'}\n"
-            f"📂 Fichier URL : {self.file_url}\n"
-            f"👤 Développeur (ID) : {self.user_id}\n"
+            f"Nom du jeu : {self.title}\n"
+            f"Description : {self.description[:50]}{'...' if len(self.description) > 50 else ''}\n"
+            f"Tags : {self.tags if self.tags else 'Aucun'}\n"
+            f"Image URL : {self.image_url if self.image_url else 'Pas d\'image'}\n"
+            f"Fichier URL : {self.file_url}\n"
+            f"Développeur (ID) : {self.user_id}\n"
         )
         return separator + game_info + separator
 
@@ -89,34 +89,34 @@ class WebsiteUser:
         return self.isLogged
 
     def returnUserDatas(self):
-        """Retourne le statut de connexion et les données de l'utilisateur."""
+        """Retourne le statut de connexion + données de l'utilisateur."""
         return {'isLogged': self.isLogged, 'data': self.data}
 
     def updateUserData(self, datas: dict, logged: bool):
-        """Met à jour les données utilisateur à partir d'un dictionnaire."""
+        """Met à jour les données  grâce à un dico """
         print(datas)
         self.isLogged = logged
         self.data.update(datas)
 
     def __str__(self):
-        """Affichage des données de l'utilisateur."""
+        """Affichage des données de l'utilisateur == debug"""
         if self.isLogged == False:
-            return  f" {"="*40} \n 🔒 Status: {'Connected' if self.isLogged else 'Disconnected'}\n {"="*40}"
+            return  f" {"="*40} \n Status: {'Connected' if self.isLogged else 'Disconnected'}\n {"="*40}"
         else :
             separator = "\n" + "=" * 40 + "\n"
             user_info = (
-                    f"🔒 Status: {'Connected' if self.isLogged else 'Disconnected'}\n"
-                    f"🆔 ID: {self.data["id"]}\n"
-                    f"👤 Username: {self.data["username"]}\n"
-                    f"📧 Email: {self.data["email"]}\n"
-                    f"🔑 Password: {self.data["password"]}\n"
-                    f"📅 Created At: {self.data["created_at"]}\n"
+                    f"Status: {'Connected' if self.isLogged else 'Disconnected'}\n"
+                    f"ID: {self.data["id"]}\n"
+                    f"Username: {self.data["username"]}\n"
+                    f"Email: {self.data["email"]}\n"
+                    f"Password: {self.data["password"]}\n"
+                    f"Created At: {self.data["created_at"]}\n"
                     f"Last loggin: {self.data["last_login"]}\n"
-                    f"👨‍💼 Name: {self.data["nom"]} | {self.data["prenom"]}\n"
-                    f"🖼️ Profile Picture: {self.data["profile_picture"]}\n"
-                    f"📝 Bio: {self.data["bio"]}\n"
-                    f"🟢 Active: {'Yes' if self.data["is_active"] else 'No'}\n"
-                    f"🛠️ Role: {self.data["role"]}\n"
+                    f"Name: {self.data["nom"]} | {self.data["prenom"]}\n"
+                    f"Profile Picture: {self.data["profile_picture"]}\n"
+                    f"Bio: {self.data["bio"]}\n"
+                    f"Active: {'Yes' if self.data["is_active"] else 'No'}\n"
+                    f"Role: {self.data["role"]}\n"
                 )
             
             return separator + user_info + separator
@@ -128,9 +128,13 @@ with app.app_context():
 websiteClient = WebsiteUser()
 print(websiteClient)
 
+def cleanFilePath(path:str):
+    """Retourne le chemin d'accès avec des "_" à la place des " " pour éviter  platages liés chemin d'accès"""
+    return path.replace(" ", "_")
+
 @app.route('/protected', methods=['GET', 'POST'])
 def protectedPage():
-    """Page protégée accessible uniquement si l'utilisateur est connecté."""
+    """Page protégée accessible si user connecté."""
     if websiteClient.userLogged():
         print('user logged')
         return "user logged"
@@ -151,12 +155,13 @@ def profilePage():
 
 def dicoTags(tags: str):
     """Sépare une chaîne de tags en une liste."""
-    tagsdico = tags.split(',')  # Utilise split pour découper la chaîne par les virgules
-    tagsdico = [tag.strip() for tag in tagsdico]  # Enlève les espaces superflus autour des tags
+    tagsdico = tags.split(',') 
+    tagsdico = [tag.strip() for tag in tagsdico]  #
     return tagsdico
 
 @app.route('/games', methods=['GET','POST'])
 def games():
+    """"Page d'acceuil des jeux"""
     games_query = GameSQLTable.query.all()
     
     # Convertir SQLAlchemy en dictionnaires pour l'affichage
@@ -277,6 +282,10 @@ def upload_game():
             flash("Aucun fichier sélectionné.", "danger")
             return redirect(request.url)
 
+        if len(image_url) > 150:
+            flash("URL de l'image sélectionné trop longue risque d'exploser la DB.", "danger")
+            return redirect(request.url)
+
         # Sauvegarde du fichier en local
         if file:
             clean_name = cleanFilePath(name)
@@ -330,6 +339,23 @@ def game_detail(game_id):
 
     return render_template('game_detail.html', game=game)
 
+# Gestion des erreurs
+@app.errorhandler(404)
+def not_found(error):
+    return "Erreur 404 : Page non trouvée", 404
+
+@app.errorhandler(500)
+def server_error(error):
+    return "Erreur 500 : Erreur interne du serveur", 500
+
+@app.errorhandler(403)
+def forbidden(error):
+    return "Erreur 403 : Accès interdit", 403
+
+@app.errorhandler(400)
+def bad_request(error):
+    return "Erreur 400 : Mauvaise requête", 400
+    
 if __name__ == "__main__":
     app.run(debug=True)
 

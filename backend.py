@@ -122,9 +122,6 @@ def ShowTableContent(sqlquerry, params=None):
 #               UPLOAD FUNCTIONS
 # ===============================================
 
-def cleanFilePath(path:str):
-    """Retourne le chemin d'accès avec des "_" à la place des " " pour éviter les platages liés au chemin d'accès"""
-    return path.replace(" ", "_")
 
 # ===============================================
 #               SQL ALCHEMY NOTES
